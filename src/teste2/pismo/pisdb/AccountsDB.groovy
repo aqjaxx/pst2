@@ -29,7 +29,7 @@ class AccountsDB extends DBInstance {
 	 */
 	
 	String get(whats) {
-		
+
 		switch(whats) {
 			case "limits" : 
 				return JsonOutput.toJson(sql.rows('select * from Accounts'));
@@ -46,8 +46,9 @@ class AccountsDB extends DBInstance {
 	 * Altera os limites do account<ID>
 	 * @return true se OK ou false se não fez alterações no database
 	 */	
-	Boolean changeLimit(int Account_ID, String camponm, valor)
+	Boolean changeLimit(int Account_ID, String camponm, BigDecimal valor)
 	{
+
 		String sgre = get(Account_ID);
 		if(sgre.charAt(0)=='#' || sgre.charAt(1)==']') return false;
 		
