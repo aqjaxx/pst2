@@ -18,27 +18,32 @@ def AccountsGet(routingContext) {
   }
 }
 
-def AccountsPatch(routingContext) {
+def AccountsPatch(routingContext) {	
 	def id = routingContext.request().getParam("id")
 	def response = routingContext.response()
 	if (id == null) {
 	  this.sendError(400, response)
 	} else {
 	  Accounts acco = new Accounts()
- 	  def resul = acco.Patch( id , routingContext.getBodyAsJson())
+ 	  def resul = acco.Patch( id , routingContext.getBodyAsString() )
+	  if(resul.charAt(0)=='#') {
+		  this.sendError(404, response)
+	  } else {
+		  response.putHeader("content-type", "application/json").end( resul )
+	  }
 	}
 }
 
 def doTransactions(routingContext) {
 	def response = routingContext.response()
 	Transactions transacao = new Transactions();
-	response.putHeader("content-type", "application/json").end( transacao.Post("transactions", routingContext.getBodyAsJson()) )
+	response.putHeader("content-type", "application/json").end( transacao.Post("transactions", routingContext.getBodyAsString()) )
 }
 
 def doPayments(routingContext) {
 	def response = routingContext.response()
 	Transactions transacao = new Transactions();
-	response.putHeader("content-type", "application/json").end( transacao.Post("payments", routingContext.getBodyAsJson()) )
+	response.putHeader("content-type", "application/json").end( transacao.Post("payments", routingContext.getBodyAsString()) )
 }
 
 def sendError(statusCode, response) {
